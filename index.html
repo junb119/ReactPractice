@@ -16,49 +16,81 @@
     console.log('React :' , React);
     console.log('ReactDOM: ', ReactDOM);
 
-    // 4. 복잡한 리액트 엘리먼트 모임
-    // <div>
-    //   <div>
-    //     <h1>주제</h1>
-    //     <ul>
-    //       <li>React</li>
-    //       <li>Vue</li>
-    //     </ul>
-    //   </div>
-    // </div>
-    // 와 같은 경우 createElement로 작성하기 무척 복잡해진다.
-    // 따라서 우리가 작성한 어떤 코드 => 순수하게 실행할 수 있는 자바스크립트로의 변환이 필요
-    // 이를 도와주는 것이 babel.
+    // 1. JSX를 사용한 function 컴포넌트 
+    // props = {message:'안녕하세요!!!'}
     
-    // babel을 이용한 컴포넌트 작성
-    const title = '주제!!!'
+    // function Component(props){
+    //   return (
+    //     <div>
+    //       <h1>{props.message} 이것은 함수로 만든 컴포넌트 입니다.</h1>
+    //     </div>
+    //   );
+    // }
+    // ReactDOM.createRoot(
+    //   document.querySelector('#root')
+    // ).render(<Component message='안녕하세요!!!'/>)
+
+
+    // 2. class 컴포넌트
+    class Component extends React.Component{
+      // state 정의 방식1 (class 컴포넌트의 멤버변수(property)로 정의 )
+
+      // state = {  // state는 항상 객체형태
+      //   count: 0,
+      // };
+
+      // state 정의 방식2
+      constructor(props){
+        super(props);
+
+        //
+        this.state = {count:0};
+      }
+
+
+      render(){
+        return (
+          <div>
+            <h1>
+              {this.props.message} 이것은 클래스로 만든 컴포넌트 입니다.
+            </h1>
+            <p>{this.state.count}</p>
+          </div>
+        );
+      }
+
+      componentDidMount() {
+        setTimeout(() => {
+          //
+          // this.state.count = this.state.count + 1; // 작동안함
+
+          // state 데이터 갱신 ver1
+          // this.setState({ // setState() state를 다시 렌더
+          //   count:this.state.count +1,
+          // });
+
+          // state 데이터 갱신 ver2
+          this.setState(previousState => {
+            const newState = {count : previousState.count + 1}
+            return newState;
+          })
+        },  1000)
+      }
+      // Props의 기본값 지정1 (class에서만 사용 가능)
+      static defaultProps = {
+        message: "기본값1",
+      }
+    }
+
+    // Props의 기본값 지정2 (함수와 class 둘다 사용 가능)
+    // Component.defaultProps = {
+    //   message : '기본값2',
+    // }
 
     ReactDOM.createRoot(
       document.querySelector('#root')
-    ).render(
-      // 최상위 루트는 하나지만 Frament(<>)를 최상위 루트로 사용해 여러개를 만들 수 있다. 
-      <> 
-      <div>
-        <div>
-          <h1>{title}</h1>
-          <ul>
-            <li>React</li>
-            <li>Vue</li>
-          </ul>
-        </div>
-      </div>
-      <div>
-        <div>
-          <h1>{title}</h1>
-          <ul>
-            <li>React</li>
-            <li>Vue</li>
-          </ul>
-        </div>
-      </div>
-    </>
-    )
-  </script>
+      ).render(<Component message="안녕하세요.!!!"/>)
+</script>
 
 </body>
 </html>
