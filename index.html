@@ -16,38 +16,48 @@
     console.log('React :' , React);
     console.log('ReactDOM: ', ReactDOM);
 
-    // React.createElement(
-    //   // createElement의 인자
-    //   type, // 태그 이름 문자열 | 리액트 컴포턴트 | React.Fragment
-    //   [props], // 리액트 컴포넌트에 넣어주는 데이터 객체
-    //   [...children] // 자식으로 넣어주는 요소들
-    // )
+    // 4. 복잡한 리액트 엘리먼트 모임
+    // <div>
+    //   <div>
+    //     <h1>주제</h1>
+    //     <ul>
+    //       <li>React</li>
+    //       <li>Vue</li>
+    //     </ul>
+    //   </div>
+    // </div>
+    // 와 같은 경우 createElement로 작성하기 무척 복잡해진다.
+    // 따라서 우리가 작성한 어떤 코드 => 순수하게 실행할 수 있는 자바스크립트로의 변환이 필요
+    // 이를 도와주는 것이 babel.
+    
+    // babel을 이용한 컴포넌트 작성
+    const title = '주제!!!'
 
-    // 1. 태그 이름 문자열 type
-    // ReactDOM.createRoot(
-    //   document.querySelector('#root')
-    //   ).render(React.createElement('h1', null, `type 이 "태그 이름 문자열" 입니다.`))
-
-
-    // 2. 리액트 컴포넌트 type
-    // const Component = () => {
-    //   return React.createElement('p', null, `type이 "React 컴포넌트" 입니다.`)
-    // }
-
-    // // <Component></Component> => <Component /> => <p>type이 "React 컴포넌트" 입니다.</p>
-    // ReactDOM.createRoot(
-    //   document.querySelector('#root')
-    // ).render(React.createElement(Component,null,null))
-  
-    // 3. React.Fragment
     ReactDOM.createRoot(
       document.querySelector('#root')
-    ).render(React.createElement(
-      React.Fragment, // 하위 태그 없이 해당 태그에 바로 요소 삽입
-      null,
-      `type 이 "React Fragment" 입니다.`
-    ))
-
+    ).render(
+      // 최상위 루트는 하나지만 Frament(<>)를 최상위 루트로 사용해 여러개를 만들 수 있다. 
+      <> 
+      <div>
+        <div>
+          <h1>{title}</h1>
+          <ul>
+            <li>React</li>
+            <li>Vue</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div>
+          <h1>{title}</h1>
+          <ul>
+            <li>React</li>
+            <li>Vue</li>
+          </ul>
+        </div>
+      </div>
+    </>
+    )
   </script>
 
 </body>
