@@ -37,16 +37,16 @@
     //       </div>
     //     )
     //   }
-    //   // componentWillMount() {
-    //   //   console.log('componentWillMount');
-    //   // }
-    //   // static getDerivedStateFromProps(nextProps, prevState) { // props를 받아서 새로운 state반환
-    //   //   console.log('getDerivedStateFromProps', nextProps, prevState)
+    //   componentWillMount() {
+    //     console.log('componentWillMount');
+    //   }
+    //   static getDerivedStateFromProps(nextProps, prevState) { // props를 받아서 새로운 state반환
+    //     console.log('getDerivedStateFromProps', nextProps, prevState)
 
-    //   //   return {
-    //   //     age: 390,
-    //   //   }
-    //   // }
+    //     return {
+    //       age: 390,
+    //     }
+    //   }
 
     //   componentDidMount() {
     //     console.log('componentDidMount')
@@ -80,37 +80,58 @@
     //   }
     // }
     
-    let i = 0;
-    class App extends React.Component {
-      state = {list:[]};
 
-      render() {
-        return <div id="list" style={{height:100, overflow:'scroll'}}>
-          {this.state.list.map((i)=>{
-            return <div>{i}</div>;
-          })}
-          </div>
-      }
 
-      componentDidMount() {
-        setInterval(() => {
-          this.setState(state => ({
-            list:[...state.list, i++]
-          }))
-        },1000)
+    // getSnapshotBeforeUpdate 사용
+
+    // let i = 0;
+    // class App extends React.Component {
+    //   state = {list:[]};
+
+    //   render() {
+    //     return <div id="list" style={{height:100, overflow:'scroll'}}>
+    //       {this.state.list.map((i)=>{
+    //         return <div>{i}</div>;
+    //       })}
+    //       </div>
+    //   }
+
+    //   componentDidMount() {
+    //     setInterval(() => {
+    //       this.setState(state => ({
+    //         list:[...state.list, i++]
+    //       }))
+    //     },1000)
+    //   }
+    //   getSnapshotBeforeUpdate(prevProps, prevState){ // 업데이트 하기전에 스냅샷 저장
+    //     if (prevState.list.length === this.state.list.length) return null;  // 이전 state와 지금 state의 갯수가 같으면 저장안함
+    //     const list = document.querySelector('#list')
+    //     return list.scrollHeight - list.scrollTop;
+    //   }
+    //   componentDidUpdate(prevProps,prevState,snapshot){
+    //     console.log(snapshot)
+    //     if ( snapshot === null) return; 
+    //     const list =document.querySelector('#list')
+    //     list.scrollTop = list.scrollHeight - snapshot
+    //   }
+    // }    
+    
+
+      // 컴포넌트 에러 캐치
+    class App extends React.Component{
+      state = {
+        hasError : false
+      };
+      render () {
+        if (this.state.hasError) {
+          return <div>예상치 못한 에러가 발생했다.</div>
+        }
+        return (<WebService /> );
       }
-      getSnapshotBeforeUpdate(prevProps, prevState){ // 업데이트 하기전에 스탭샷 저장
-        if (prevState.list.length === this.state.list.length) return null;  // 이전 state와 지금 state의 갯수가 같으면 저장안함
-        const list = document.querySelector('#list')
-        return list.scrollHeight - list.scrollTop;
+      componentDidCatch(error, info) {
+        this.setState({hasError: true});
       }
-      componentDidUpdate(prevProps,prevState,snapshot){
-        console.log(snapshot)
-        if ( snapshot === null) return; 
-        const list =document.querySelector('#list')
-        list.scrollTop = list.scrollHeight - snapshot
-      }
-    }       
+    }
     ReactDOM.createRoot(document.querySelector('#root')).render(<App name = 'Mark'/>)
 </script>
 
